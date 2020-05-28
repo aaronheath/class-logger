@@ -1,0 +1,35 @@
+{
+  "name": "aaronheath/class-logger",
+  "description": "Simple logging helper trait for use within Laravel classes.",
+  "license": "MIT",
+  "keywords": ["laravel", "logging", "logs"],
+  "authors": [
+    {
+      "name": "Aaron Heath",
+      "email": "aaron@aaronheath.com",
+      "homepage": "https://aaronheath.com"
+    }
+  ],
+  "require": {
+    "php": "^7.2.5",
+    "illuminate/support": "~5.7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Heath\\ClassLogger\\": "src/"
+    }
+  },
+  "require-dev": {
+    "mockery/mockery": "^1.0",
+    "phpunit/phpunit": "~7.0",
+    "orchestra/testbench": "~3.7.0",
+    "sempro/phpunit-pretty-print": "^1.0",
+    "timacdonald/log-fake": "^1.6"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "minimum-stability": "stable"
+}
