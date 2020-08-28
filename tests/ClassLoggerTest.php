@@ -11,7 +11,7 @@ class ClassLoggerTest extends Orchestra
 {
     protected $testClass;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setup();
 
