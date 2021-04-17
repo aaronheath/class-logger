@@ -3,7 +3,7 @@
          backupGlobals="false"
          backupStaticAttributes="false"
          colors="true"
-         printerClass="Sempro\PHPUnitPrettyPrinter\PrettyPrinter"
+         printerClass="Sempro\PHPUnitPrettyPrinter\PrettyPrinterForPhpUnit9"
          verbose="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
@@ -15,11 +15,11 @@
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist>
+    <coverage processUncoveredFiles="true">
+        <include>
             <directory suffix=".php">src/</directory>
-        </whitelist>
-    </filter>
+        </include>
+    </coverage>
     <php>
         <env name="MAIL_DRIVER" value="null"/>
     </php>

@@ -1,6 +1,6 @@
 # Class Logger
 
-[![Build Status](https://travis-ci.org/aaronheath/class-logger.svg?branch=master)](https://travis-ci.org/aaronheath/class-logger)
+![Build](https://github.com/aaronheath/class-logger/workflows/Build/badge.svg)
 
 ## Introduction
 
