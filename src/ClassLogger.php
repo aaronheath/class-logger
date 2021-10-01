@@ -56,4 +56,9 @@ trait ClassLogger
             $context
         );
     }
+
+    public function output($)
+    {
+        
+    }
 }
