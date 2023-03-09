@@ -3,6 +3,7 @@
 namespace Tests;
 
 use Orchestra\Testbench\TestCase as Orchestra;
+use TiMacDonald\Log\LogEntry;
 use TiMacDonald\Log\LogFake;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
@@ -15,7 +16,7 @@ class ClassLoggerTest extends Orchestra
     {
         parent::setup();
 
-        Log::swap(new LogFake);
+        LogFake::bind();
 
         $this->testClass = $this->app->make(TestClass::class);
     }
@@ -29,8 +30,9 @@ class ClassLoggerTest extends Orchestra
     {
         $this->testClass->defaultLog();
 
-        Log::assertLogged('debug', function($message, $context) {
-            return Str::contains($message, 'Tests\TestClass :: This is a log');
+        Log::assertLogged(function(LogEntry $log) {
+            return $log->level === 'debug'
+                && Str::contains($log->message, 'Tests\TestClass :: This is a log');
         });
     }
 
@@ -43,12 +45,16 @@ class ClassLoggerTest extends Orchestra
     {
         $this->testClass->defaultLogWithContext();
 
-        Log::assertLogged('debug', function($message, $context) {
-            if(! Str::contains($message, 'Tests\TestClass :: This is a log with context')) {
+        Log::assertLogged(function(LogEntry $log) {
+            if($log->level !== 'debug') {
                 return false;
             }
 
-            return $context == ['a' => 'b'];
+            if(! Str::contains($log->message, 'Tests\TestClass :: This is a log with context')) {
+                return false;
+            }
+
+            return $log->context == ['a' => 'b'];
         });
     }
 
@@ -59,8 +65,9 @@ class ClassLoggerTest extends Orchestra
     {
         $this->testClass->emergencyLog();
 
-        Log::assertLogged('emergency', function($message, $context) {
-            return Str::contains($message, 'Tests\TestClass :: This is an emergency log');
+        Log::assertLogged(function(LogEntry $log) {
+            return $log->level === 'emergency'
+                && Str::contains($log->message, 'Tests\TestClass :: This is an emergency log');
         });
     }
 
@@ -71,12 +78,16 @@ class ClassLoggerTest extends Orchestra
     {
         $this->testClass->emergencyLogWithContext();
 
-        Log::assertLogged('emergency', function($message, $context) {
-            if(! Str::contains($message, 'Tests\TestClass :: This is an emergency log with context')) {
+        Log::assertLogged(function(LogEntry $log) {
+            if($log->level !== 'emergency') {
                 return false;
             }
 
-            return $context == ['a' => 'b'];
+            if(! Str::contains($log->message, 'Tests\TestClass :: This is an emergency log with context')) {
+                return false;
+            }
+
+            return $log->context == ['a' => 'b'];
         });
     }
 
@@ -87,8 +98,9 @@ class ClassLoggerTest extends Orchestra
     {
         $this->testClass->alertLog();
 
-        Log::assertLogged('alert', function($message, $context) {
-            return Str::contains($message, 'Tests\TestClass :: This is an alert log');
+        Log::assertLogged(function(LogEntry $log) {
+            return $log->level === 'alert'
+                && Str::contains($log->message, 'Tests\TestClass :: This is an alert log');
         });
     }
 
@@ -99,24 +111,29 @@ class ClassLoggerTest extends Orchestra
     {
         $this->testClass->alertLogWithContext();
 
-        Log::assertLogged('alert', function($message, $context) {
-            if(! Str::contains($message, 'Tests\TestClass :: This is an alert log with context')) {
+        Log::assertLogged(function(LogEntry $log) {
+            if($log->level !== 'alert') {
                 return false;
             }
 
-            return $context == ['a' => 'b'];
+            if(! Str::contains($log->message, 'Tests\TestClass :: This is an alert log with context')) {
+                return false;
+            }
+
+            return $log->context == ['a' => 'b'];
         });
     }
 
     /**
      * @test
      */
-    public function can_log_to_crtiical_level()
+    public function can_log_to_critical_level()
     {
         $this->testClass->criticalLog();
 
-        Log::assertLogged('critical', function($message, $context) {
-            return Str::contains($message, 'Tests\TestClass :: This is an critical log');
+        Log::assertLogged(function(LogEntry $log) {
+            return $log->level === 'critical'
+                && Str::contains($log->message, 'Tests\TestClass :: This is an critical log');
         });
     }
 
@@ -127,12 +144,16 @@ class ClassLoggerTest extends Orchestra
     {
         $this->testClass->criticalLogWithContext();
 
-        Log::assertLogged('critical', function($message, $context) {
-            if(! Str::contains($message, 'Tests\TestClass :: This is an critical log with context')) {
+        Log::assertLogged(function(LogEntry $log) {
+            if($log->level !== 'critical') {
                 return false;
             }
 
-            return $context == ['a' => 'b'];
+            if(! Str::contains($log->message, 'Tests\TestClass :: This is an critical log with context')) {
+                return false;
+            }
+
+            return $log->context == ['a' => 'b'];
         });
     }
 
@@ -143,8 +164,9 @@ class ClassLoggerTest extends Orchestra
     {
         $this->testClass->errorLog();
 
-        Log::assertLogged('error', function($message, $context) {
-            return Str::contains($message, 'Tests\TestClass :: This is an error log');
+        Log::assertLogged(function(LogEntry $log) {
+            return $log->level === 'error'
+                && Str::contains($log->message, 'Tests\TestClass :: This is an error log');
         });
     }
 
@@ -155,12 +177,16 @@ class ClassLoggerTest extends Orchestra
     {
         $this->testClass->errorLogWithContext();
 
-        Log::assertLogged('error', function($message, $context) {
-            if(! Str::contains($message, 'Tests\TestClass :: This is an error log with context')) {
+        Log::assertLogged(function(LogEntry $log) {
+            if($log->level !== 'error') {
                 return false;
             }
 
-            return $context == ['a' => 'b'];
+            if(! Str::contains($log->message, 'Tests\TestClass :: This is an error log with context')) {
+                return false;
+            }
+
+            return $log->context == ['a' => 'b'];
         });
     }
 
@@ -171,8 +197,9 @@ class ClassLoggerTest extends Orchestra
     {
         $this->testClass->warningLog();
 
-        Log::assertLogged('warning', function($message, $context) {
-            return Str::contains($message, 'Tests\TestClass :: This is an warning log');
+        Log::assertLogged(function(LogEntry $log) {
+            return $log->level === 'warning'
+                && Str::contains($log->message, 'Tests\TestClass :: This is an warning log');
         });
     }
 
@@ -183,12 +210,16 @@ class ClassLoggerTest extends Orchestra
     {
         $this->testClass->warningLogWithContext();
 
-        Log::assertLogged('warning', function($message, $context) {
-            if(! Str::contains($message, 'Tests\TestClass :: This is an warning log with context')) {
+        Log::assertLogged(function(LogEntry $log) {
+            if($log->level !== 'warning') {
                 return false;
             }
 
-            return $context == ['a' => 'b'];
+            if(! Str::contains($log->message, 'Tests\TestClass :: This is an warning log with context')) {
+                return false;
+            }
+
+            return $log->context == ['a' => 'b'];
         });
     }
 
@@ -199,8 +230,9 @@ class ClassLoggerTest extends Orchestra
     {
         $this->testClass->noticeLog();
 
-        Log::assertLogged('notice', function($message, $context) {
-            return Str::contains($message, 'Tests\TestClass :: This is an notice log');
+        Log::assertLogged(function(LogEntry $log) {
+            return $log->level === 'notice'
+                && Str::contains($log->message, 'Tests\TestClass :: This is an notice log');
         });
     }
 
@@ -211,12 +243,16 @@ class ClassLoggerTest extends Orchestra
     {
         $this->testClass->noticeLogWithContext();
 
-        Log::assertLogged('notice', function($message, $context) {
-            if(! Str::contains($message, 'Tests\TestClass :: This is an notice log with context')) {
+        Log::assertLogged(function(LogEntry $log) {
+            if($log->level !== 'notice') {
                 return false;
             }
 
-            return $context == ['a' => 'b'];
+            if(! Str::contains($log->message, 'Tests\TestClass :: This is an notice log with context')) {
+                return false;
+            }
+
+            return $log->context == ['a' => 'b'];
         });
     }
 
@@ -227,8 +263,9 @@ class ClassLoggerTest extends Orchestra
     {
         $this->testClass->infoLog();
 
-        Log::assertLogged('info', function($message, $context) {
-            return Str::contains($message, 'Tests\TestClass :: This is an info log');
+        Log::assertLogged(function(LogEntry $log) {
+            return $log->level === 'info'
+                && Str::contains($log->message, 'Tests\TestClass :: This is an info log');
         });
     }
 
@@ -239,12 +276,16 @@ class ClassLoggerTest extends Orchestra
     {
         $this->testClass->infoLogWithContext();
 
-        Log::assertLogged('info', function($message, $context) {
-            if(! Str::contains($message, 'Tests\TestClass :: This is an info log with context')) {
+        Log::assertLogged(function(LogEntry $log) {
+            if($log->level !== 'info') {
                 return false;
             }
 
-            return $context == ['a' => 'b'];
+            if(! Str::contains($log->message, 'Tests\TestClass :: This is an info log with context')) {
+                return false;
+            }
+
+            return $log->context == ['a' => 'b'];
         });
     }
 
@@ -255,8 +296,9 @@ class ClassLoggerTest extends Orchestra
     {
         $this->testClass->debugLog();
 
-        Log::assertLogged('debug', function($message, $context) {
-            return Str::contains($message, 'Tests\TestClass :: This is an debug log');
+        Log::assertLogged(function(LogEntry $log) {
+            return $log->level === 'debug'
+                && Str::contains($log->message, 'Tests\TestClass :: This is an debug log');
         });
     }
 
@@ -267,12 +309,16 @@ class ClassLoggerTest extends Orchestra
     {
         $this->testClass->debugLogWithContext();
 
-        Log::assertLogged('debug', function($message, $context) {
-            if(! Str::contains($message, 'Tests\TestClass :: This is an debug log with context')) {
+        Log::assertLogged(function(LogEntry $log) {
+            if($log->level !== 'debug') {
                 return false;
             }
 
-            return $context == ['a' => 'b'];
+            if(! Str::contains($log->message, 'Tests\TestClass :: This is an debug log with context')) {
+                return false;
+            }
+
+            return $log->context == ['a' => 'b'];
         });
     }
 
@@ -283,12 +329,16 @@ class ClassLoggerTest extends Orchestra
     {
         $this->testClass->customLogWithContext();
 
-        Log::assertLogged('alert', function($message, $context) {
-            if(! Str::contains($message, 'Tests\TestClass :: This is an custom log with context')) {
+        Log::assertLogged(function(LogEntry $log) {
+            if($log->level !== 'alert') {
                 return false;
             }
 
-            return $context == ['a' => 'b'];
+            if(! Str::contains($log->message, 'Tests\TestClass :: This is an custom log with context')) {
+                return false;
+            }
+
+            return $log->context == ['a' => 'b'];
         });
     }
 }
