@@ -24,7 +24,7 @@
     "phpunit/phpunit": "^10.0",
     "orchestra/testbench": "^8.0",
     "sempro/phpunit-pretty-print": "^1.0",
-    "timacdonald/log-fake": "^2.0",
+    "timacdonald/log-fake": "^2.1",
     "spatie/laravel-ray": "^1.17"
   },
   "autoload-dev": {
