@@ -46,8 +46,8 @@ class Example
 Outputs to log file:
 
 ```text
-[2020-05-27 02:55:10] testing.INFO: App\Support\Example :: something done
-[2020-05-27 02:55:10] testing.INFO: App\Support\Example :: also with array of data {"aaa":"bbb"}
+[2024-05-27 02:55:10] testing.DEBUG: App\Support\Example :: something done
+[2024-05-27 02:55:10] testing.DEBUG: App\Support\Example :: also with array of data {"aaa":"bbb"}
 ```
 
 ## Installation
