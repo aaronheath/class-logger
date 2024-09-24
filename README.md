@@ -52,21 +52,16 @@ Outputs to log file:
 
 ## Installation
 
-This package is installed via [Composer](https://getcomposer.org/). 
+This package is installed via [Composer](https://getcomposer.org/). To install, run the following command.
 
-Before installing, the repository must be added to the repositories section of the host projects composer.json.
-
-```text
-"repositories": [
-    {
-        "type": "vcs",
-        "url": "https://github.com/aaronheath/class-logger"
-    }
-],
-```
-
-To install, run the following command.
+### Laravel 11
 
 ```bash
-composer require aaronheath/class-logger
+composer require aaronheath/class-logger:^2.0
+```
+
+### Laravel 9 to 10
+
+```bash
+composer require aaronheath/class-logger:^1.2
 ```
